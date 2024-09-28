@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorLowPriority">#FFE5B4</color> <!-- Light Yellow -->
+    <color name="colorMediumPriority">#FFDAB9</color> <!-- Light Orange -->
+    <color name="colorHighPriority">#FFB2B2</color> <!-- Light Red -->
+</resources>
