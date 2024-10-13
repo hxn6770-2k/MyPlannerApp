@@ -8,6 +8,30 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Programmer: Vivian Nguyen
+ * Contact: viviannguyen726@gmail.com
+ * Date: October 2024
+ * Version: 1.3
+ *
+ * Purpose: This class represents a ToDo item in the ToDo list app.
+ * It includes properties such as the item’s ID, name, deadline, and priority level.
+ * The class provides methods for manipulating ToDo items, including comparison methods for sorting.
+ *
+ * Enhancements:
+ * - Added color coding based on priority levels for visual task management.
+ * - Implemented sorting mechanisms to allow ordering of tasks by deadline and priority.
+ *
+ * Issues:
+ * - Ensure proper error handling in sorting methods, especially when parsing dates.
+ * - Future enhancements should consider more sophisticated date formats and localization support.
+ *
+ * Efficiency Considerations:
+ * - The comparison methods for sorting are efficient with O(n log n) time complexity in
+ *   typical sorting scenarios, assuming a standard sorting algorithm is used.
+ * - Parsing dates may introduce overhead; thus, caching parsed dates could improve efficiency
+ *   in scenarios where the same dates are frequently compared.
+ */
 public class ToDo {
     // Unique identifier for the ToDo item
     private int id;
@@ -109,13 +133,13 @@ public class ToDo {
 
     /**
      * Compares two ToDo items by priority for sorting.
-     * @param task1 The first ToDo item.
-     * @param task2 The second ToDo item.
+     * @param task2 The first ToDo item.
+     * @param task1 The second ToDo item.
      * @return A negative integer, zero, or a positive integer as the first argument is less than,
      *         equal to, or greater than the second.
      */
     public static int compareByPriority(ToDo task1, ToDo task2) {
-        return Integer.compare(task2.getPriority(), task1.getPriority()); // Sort in descending order
+        return Integer.compare(task1.getPriority(), task2.getPriority()); // Sort in descending order
     }
 
     /**

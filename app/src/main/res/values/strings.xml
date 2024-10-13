@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ToDoList</string>
     <string-array name="sort_options">
+        <item>default</item>
         <item>Sort by Priority</item>
         <item>Sort by Deadline</item>
     </string-array>

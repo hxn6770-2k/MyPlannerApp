@@ -24,9 +24,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Programmer: Vivian Nguyen
+ * Contact: viviannguyen726@gmail.com
+ * Date: October 2024
+ * Version: 1.3
+ *
  * MainActivity class that handles the user interface and interactions
  * for the To-Do list application. It allows users to add, update,
  * and remove tasks from the list.
+ *
+ * Enhancements:
+ * - Provides a user-friendly interface for managing ToDo items.
+ * - Implements functionality to add, update, and delete ToDo items efficiently.
+ * - Allows users to select task priority and deadline during item creation and updates.
+ * - Utilizes a custom adapter to manage the display of ToDo items in a ListView.
+ * - Displays confirmation dialogs before deleting items to prevent accidental removals.
+ *
+ * Issues:
+ * - Ensure proper error handling for user input to avoid potential crashes.
+ * - Future enhancements may include implementing filtering options for the task list.
+ *
+ * Efficiency Considerations:
+ * - The application uses an ArrayList to store ToDo items, providing O(1) access time.
+ * - The ListView is updated efficiently using the adapter's notifyDataSetChanged method
+ *   to refresh the UI after data modifications.
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -125,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                     toDo.setName(name);
                     toDo.setDeadline(deadline);
                     toDo.setPriority(priority);
+
 
                     // Assuming `toDoListDB` has an appropriate method to add a ToDo object
                     toDoListDB.add(toDo); // Update this line to match your DB method
@@ -236,27 +258,77 @@ public class MainActivity extends AppCompatActivity {
 }
 
 /**
- * Adapter class to manage the display of ToDo items in the ListView.
+ * ToDoListAdapter class is responsible for managing the display of ToDo items
+ * in a ListView. This class utilizes an ArrayAdapter to handle the dynamic
+ * population of the ListView with the task data stored in an ArrayList of
+ * ToDo objects. It efficiently handles the display by implementing the
+ * ViewHolder pattern, which optimizes memory usage and enhances performance
+ * when rendering ListView items.
+ *
+ * Programmer: Vivian Nguyen
+ * Contact: viviannguyen726@gmail.com
+ * Date: October 2024
+ * Version: 1.3
+ *
+ * Purpose: This class inflates the ListView with the ToDo items and displays
+ * their names. It also assigns a background color to each ListView item
+ * based on the task's priority.
+ *
+ * Enhancements:
+ * - Added ViewHolder pattern to improve performance by avoiding redundant
+ *   view inflation and lookup calls, optimizing memory usage, and speeding
+ *   up list scrolling.
+ * - Implemented dynamic background color assignment based on task priority.
+ *
+ * Issues:
+ * - Ensure that all ToDo objects in the list contain valid data to avoid
+ *   potential NullPointerExceptions.
+ *
+ * Efficiency Considerations:
+ * - The ViewHolder pattern is applied to ensure that views are reused where
+ *   possible, which reduces the number of calls to findViewById and improves
+ *   ListView rendering efficiency.
+ * - The ArrayAdapter is used in conjunction with the ViewHolder to manage
+ *   the view creation process. This approach provides an O(1) time complexity
+ *   for accessing list items once they are loaded into memory, resulting in
+ *   efficient list performance.
  */
+
 class ToDoListAdapter extends ArrayAdapter<ToDo> {
+
     public ToDoListAdapter(Context context, ArrayList<ToDo> toDoList) {
         super(context, 0, toDoList); // Call the super constructor
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ToDo toDo = getItem(position); // Get the ToDo item for this position
+        // ViewHolder pattern for better performance
+        ViewHolder viewHolder;
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.name = convertView.findViewById(android.R.id.text1); // Initialize TextView
+            convertView.setTag(viewHolder); // Set the ViewHolder as a tag
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag(); // Retrieve the ViewHolder
         }
 
-        TextView name = convertView.findViewById(android.R.id.text1); // Get the TextView for the task name
-        name.setText(toDo.getName()); // Set the task name
+        ToDo toDo = getItem(position); // Get the ToDo item for this position
 
-        // Set the background color based on priority using the new method
-        convertView.setBackgroundColor(toDo.getColor());
+        // Check for null to avoid NullPointerException
+        if (toDo != null) {
+            viewHolder.name.setText(toDo.getName()); // Set the task name
+
+            // Set the background color based on priority using the new method
+            convertView.setBackgroundColor(toDo.getColor());
+        }
 
         return convertView; // Return the populated view
+    }
+
+    // ViewHolder class to hold references to the views
+    static class ViewHolder {
+        TextView name; // Reference to the TextView for task name
     }
 }
